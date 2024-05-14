@@ -53,7 +53,11 @@ def detailProduct(request, p_id):
 
 def login_user(request):
     if request.user.is_authenticated:
-        return render(request, 'boshliq/boshliq.html')
+        products = Product.objects.all()
+        for product in products:
+            product.summa_result = product.amount * product.summa
+            product.dollor_result = product.amount * product.dollor
+        return render(request, 'boshliq/barcha.html', {'product': products})
     else:
         if request.method == 'POST':
             username = request.POST['username']
